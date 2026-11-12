@@ -572,8 +572,8 @@ dialog::backdrop{background:rgba(6,12,30,.62);backdrop-filter:blur(4px)}
 <li>商品発送時期については細心の注意を払っておりますが、延着などによる2次的に発生する事由による一切の責任は負いかねます。</li></ul></div>
 </template>
 
-<script src="data.js"></script>
 <script>
+fetch("data.json",{cache:"no-store"}).then(function(r){if(!r.ok)throw 0;return r.json()}).then(function(d){window.SK=d;
 (function(){
   var D=window.SK,$=function(s,r){return(r||document).querySelector(s)},$$=function(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))};
   var CAT={tent:"テント",tentgoods:"テント用品",safety:"安全・仮設資材",sheet:"シート・生地",used:"中古・買取"};
@@ -589,7 +589,7 @@ dialog::backdrop{background:rgba(6,12,30,.62);backdrop-filter:blur(4px)}
 
   /* cleaning */
   $("#cleanGal").innerHTML=D.cleanItems.map(function(c){return '<figure><img src="'+img(c[0])+'" alt="'+esc(c[1])+'" loading="lazy"><figcaption>'+esc(c[1])+'</figcaption></figure>'}).join("");
-  function drawTbl(k){var t=D.cleanTable[k];$("#cleanTbl").innerHTML='<thead><tr>'+t.head.map(function(h){return"<th>"+h+"</th>"}).join("")+'</tr></thead><tbody>'+t.rows.map(function(r){return"<tr><td>"+r[0]+"</td><td>"+r[1]+"</td><td><b>¥"+r[2]+"</b></td></tr>"}).join("")+"</tbody>"}
+  function drawTbl(k){var t=D.cleanTable[k];$("#cleanTbl").innerHTML='<thead><tr>'+t.head.map(function(h){return"<th>"+esc(h)+"</th>"}).join("")+'</tr></thead><tbody>'+t.rows.map(function(r){return"<tr><td>"+esc(r[0])+"</td><td>"+esc(r[1])+"</td><td><b>¥"+esc(r[2])+"</b></td></tr>"}).join("")+"</tbody>"}
   drawTbl("normal");
   $$(".tabs button").forEach(function(b){b.onclick=function(){$$(".tabs button").forEach(function(x){x.setAttribute("aria-selected",x===b)});drawTbl(b.dataset.t)}});
 
@@ -643,6 +643,7 @@ dialog::backdrop{background:rgba(6,12,30,.62);backdrop-filter:blur(4px)}
   $$(".rv").forEach(function(e){io?io.observe(e):e.classList.add("in")});
   document.addEventListener("click",function(e){var m=e.target.closest(".mm a");if(m)$(".mm").removeAttribute("open")});
 })();
+}).catch(function(){document.getElementById("grid").innerHTML="<p style=\"padding:20px\">データを読み込めませんでした。時間をおいて再読み込みしてください。</p>"});
 </script>
 </body>
 </html>
